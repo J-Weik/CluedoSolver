@@ -65,10 +65,10 @@ public class Player {
         return true;
     }
 
-    boolean checkForNewInfo)() {
-    for (Accusation acc : accusations) {
+    //boolean checkForNewInfo() {
+    //for (Accusation acc : accusations) {
 
-    }
-    }
+    //}
+    //}
 
 }
