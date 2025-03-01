@@ -9,4 +9,11 @@ public class Card {
         this.id = id;
     }
 
+    boolean equals(Card card) {
+        if(this.id.equals(card.id)) {
+            return true;
+        }
+        return false;
+    }
+
 }

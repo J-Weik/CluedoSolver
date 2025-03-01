@@ -10,6 +10,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         int playerAmount;
         int GuessingChance;
+        CardInput cI = new CardInput();
 
         ArrayList<Card> Karten = new ArrayList<>();
         Karten.add(new Card(1,"Prof. Bloom","bloom"));
@@ -61,11 +62,11 @@ public class Main {
             }
         }
         System.out.print("Welcher der Spieler bist du in der Reinfolge? :");
-        int playerController = sc.nextInt();
-        //TODO: fixen
+        int playerController = sc.nextInt()-1;
+
         for(int i=0;i<players[playerController].getAmountCards();i++){
-            System.out.print("Was ist deine "+(i+1)+"ste Karte?: ");
-            String eingabe = sc.next().toLowerCase();
+            System.out.print("Was ist deine "+(i+1)+"te Karte?: ");
+            players[playerController].addKnownCard(cI.sCard(sc.next()));
         }
     }
 }
