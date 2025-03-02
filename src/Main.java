@@ -9,7 +9,7 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
         int playerAmount;
-        int guessingChance;
+        double guessingChance = 0.0;
         CardInput cI = new CardInput();
         Player Case = new Player("Case",-1);
         Case.setAmountCards(3);
@@ -78,14 +78,40 @@ public class Main {
             }
         }
 
+        Card accusedPerson;
+        Card accusedWeapon;
+        Card accusedRoom;
+
         while(guessingChance<1){
             for(Player p:players){
                 System.out.println("Hat "+p.getName()+" eine Anklage gemacht?(y/n): ");
                 if(sc.next().equals("n"))
                     continue;
                 else{
-                    //TODO:KartenInput für Waffe/Spieler/Raum und logik
-                    System.out.println("")
+                    System.out.println("Gib die verdächtigte Person ein: ");
+                    accusedPerson = cI.sCard(sc.next());
+                    System.out.println("Gib die verdächtigte Waffe ein: ");
+                    accusedWeapon = cI.sCard(sc.next());
+                    System.out.println("Gib den verdächtigten Raum ein: ");
+                    accusedRoom = cI.sCard(sc.next());
+
+                    String playerInput = "";
+                    Player playerWhoGaveCard;
+
+                    while(true){
+                    System.out.println("Welcher der Spieler hat eine Karte gegeben?(Keiner falls niemand Karte gegeben hat: )");
+
+                    playerInput = sc.next();
+                    for(Player p2:players) {
+                        if(p2.getName().equals(playerInput)){
+                            playerWhoGaveCard = p2;
+                            break;
+                        }
+                    }
+
+                    }
+
+
                 }
             }
         }
