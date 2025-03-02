@@ -9,8 +9,10 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
         int playerAmount;
-        int GuessingChance;
+        int guessingChance;
         CardInput cI = new CardInput();
+        Player Case = new Player("Case",-1);
+        Case.setAmountCards(3);
 
         ArrayList<Card> Karten = new ArrayList<>();
         Karten.add(new Card(1,"Prof. Bloom","bloom"));
@@ -61,12 +63,32 @@ public class Main {
                 p.setAmountCards(18/playerAmount);
             }
         }
-        System.out.print("Welcher der Spieler bist du in der Reinfolge? :");
+        System.out.print("Welcher der Spieler bist du in der Reinfolge?: ");
         int playerController = sc.nextInt()-1;
 
         for(int i=0;i<players[playerController].getAmountCards();i++){
             System.out.print("Was ist deine "+(i+1)+"te Karte?: ");
-            players[playerController].addKnownCard(cI.sCard(sc.next()));
+            Card kartenInput = cI.sCard(sc.next());
+            players[playerController].addKnownCard(kartenInput);
+            Case.addCardNotOwned(kartenInput);
+            for(Player p:players){
+                if(p!=players[playerController]){
+                    p.addCardNotOwned(kartenInput);
+                }
+            }
         }
+
+        while(guessingChance<1){
+            for(Player p:players){
+                System.out.println("Hat "+p.getName()+" eine Anklage gemacht?(y/n): ");
+                if(sc.next().equals("n"))
+                    continue;
+                else{
+                    //TODO:KartenInput für Waffe/Spieler/Raum und logik
+                    System.out.println("")
+                }
+            }
+        }
+
     }
 }
