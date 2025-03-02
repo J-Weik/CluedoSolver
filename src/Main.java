@@ -134,7 +134,7 @@ public class Main {
 
                     // Alle Spieler die keine Karte gegeben habe nhaben keine der Karten
                     //TODO: FIXEN GROẞER FEHLER
-                    for(int i= p.getId();i==playerIdWhoGaveCard;i++){
+                    for(int i= p.getId()+1;i!=playerIdWhoGaveCard;i++){
                         players[i].addCardNotOwned(accusedPerson);
                         players[i].addCardNotOwned(accusedWeapon);
                         players[i].addCardNotOwned(accusedRoom);
@@ -142,15 +142,14 @@ public class Main {
                     players[playerIdWhoGaveCard].addAccusation(new Accusation(accusedPerson,accusedWeapon,accusedRoom));
                 }
                 // Läuft durch alle Spieler und wenn die Schnittmenge von 2 Accusations = 1 ist wird diese Karte zu den KnownCards hinzugefügt
-                //TODO funktioniert nicht
                 for(Player p2:players){
                     for(Accusation a:p2.getAccusations()){
-                        for(int i = p2.getAccusations().indexOf(a)+1;i<p2.getAccusations().size();i++){
-                            if(a.getIntersectingCards(p2.getAccusations().get(i)).equals(1)) {
-                                p2.addKnownCard(a.getIntersectingCards(p2.getAccusations().get(i)).get(1));
+                        for(int i = p2.getAccusations().indexOf(a);i<=(p2.getAccusations().size()-1);i++){
+                            if(a.getIntersectingCards(p2.getAccusations().get(i)).size()==1) {
+                                p2.addKnownCard(a.getIntersectingCards(p2.getAccusations().get(i)).get(0));
                                 for (Player p3 : players) {
                                     if(p3!=p2)
-                                        p3.addCardNotOwned(a.getIntersectingCards(p2.getAccusations().get(i)).get(1));
+                                        p3.addCardNotOwned(a.getIntersectingCards(p2.getAccusations().get(i)).get(0));
                                 }
                             }
                         }
