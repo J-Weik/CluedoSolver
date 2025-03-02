@@ -89,6 +89,7 @@ public class Main {
             LinkedList<Card> susWeapons = new LinkedList<>();
             LinkedList<Card> susRooms = new LinkedList<>();
 
+            //MainLoop player durchlauf
             for(Player p:players){
                 System.out.print("Hat "+p.getName()+" eine Anklage gemacht?(y/n): ");
                 if(sc.next().equals("n"))
@@ -130,7 +131,10 @@ public class Main {
                         break;
                     }
                     //Hier endet Player Name Input
-                    for(int i= p.getId()+1;i!=playerIdWhoGaveCard;i++){
+
+                    // Alle Spieler die keine Karte gegeben habe nhaben keine der Karten
+                    //TODO: FIXEN GROẞER FEHLER
+                    for(int i= p.getId();i==playerIdWhoGaveCard;i++){
                         players[i].addCardNotOwned(accusedPerson);
                         players[i].addCardNotOwned(accusedWeapon);
                         players[i].addCardNotOwned(accusedRoom);
@@ -138,9 +142,10 @@ public class Main {
                     players[playerIdWhoGaveCard].addAccusation(new Accusation(accusedPerson,accusedWeapon,accusedRoom));
                 }
                 // Läuft durch alle Spieler und wenn die Schnittmenge von 2 Accusations = 1 ist wird diese Karte zu den KnownCards hinzugefügt
+                //TODO funktioniert nicht
                 for(Player p2:players){
                     for(Accusation a:p2.getAccusations()){
-                        for(int i = p2.getAccusations().indexOf(a);i<p2.getAccusations().size();i++){
+                        for(int i = p2.getAccusations().indexOf(a)+1;i<p2.getAccusations().size();i++){
                             if(a.getIntersectingCards(p2.getAccusations().get(i)).equals(1)) {
                                 p2.addKnownCard(a.getIntersectingCards(p2.getAccusations().get(i)).get(1));
                                 for (Player p3 : players) {
@@ -154,21 +159,23 @@ public class Main {
                 System.out.println("######################################################");
                 System.out.println("Guessing Chance= "+guessingChance);
                 System.out.println("Verdächtigte Personen sind:");
+                System.out.println();
                 for(Card c:susPersons){
                     System.out.print(c.name+", ");
                 }
+                System.out.println("Verdächtigte Waffen sind:");
                 System.out.println();
                 for(Card c:susWeapons){
                     System.out.print(c.name+", ");
                 }
+                System.out.println("Verdächtigte Räume sind:");
                 System.out.println();
                 for(Card c:susRooms){
                     System.out.print(c.name+", ");
                 }
-                System.out.println();
                 System.out.println("######################################################");
                 for(Player p2:players){
-                    System.out.println();
+                    System.out.println("------------------");
                     System.out.println(p2.getName());
                     System.out.println("Bessesene Karten: ");
                     for(Card c:p2.getCardsOwned()) {
@@ -177,12 +184,15 @@ public class Main {
                         else
                             System.out.print("None"+", ");
                     }
+                    System.out.println();
+                    System.out.println("Nicht Bessesene Karten: ");
                     for(Card c:p2.getCardsNotOwned()) {
                         if(c!=null)
                             System.out.print(c.name+", ");
                         else
                             System.out.print("None"+", ");
                     }
+                    System.out.println();
                     System.out.println("Karten, die noch nicht bekannt sind: "+(p2.getAmountCards()-p2.getCardsOwned().size()));
                 }
             }
