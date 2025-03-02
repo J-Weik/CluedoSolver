@@ -65,10 +65,15 @@ public class Player {
         return true;
     }
 
-    //boolean checkForNewInfo() {
-    //for (Accusation acc : accusations) {
+    public LinkedList<Accusation> getAccusations() {
+        return accusations;
+    }
 
-    //}
-    //}
+    public LinkedList<Card> getCardsOwned() {
+        return cardsOwned;
+    }
 
+    public LinkedList<Card> getCardsNotOwned() {
+        return cardsNotOwned;
+    }
 }

@@ -136,7 +136,44 @@ public class Main {
                         players[i].addCardNotOwned(accusedRoom);
                     }
                     players[playerIdWhoGaveCard].addAccusation(new Accusation(accusedPerson,accusedWeapon,accusedRoom));
-
+                }
+                // Läuft durch alle Spieler und wenn die Schnittmenge von 2 Accusations = 1 ist wird diese Karte zu den KnownCards hinzugefügt
+                for(Player p2:players){
+                    for(Accusation a:p2.getAccusations()){
+                        for(int i = p2.getAccusations().indexOf(a);i<p2.getAccusations().size();i++){
+                            if(a.getIntersectingCards(p2.getAccusations().get(i)).equals(1)) {
+                                p2.addKnownCard(a.getIntersectingCards(p2.getAccusations().get(i)).get(1));
+                                for (Player p3 : players) {
+                                    if(p3!=p2)
+                                        p3.addCardNotOwned(a.getIntersectingCards(p2.getAccusations().get(i)).get(1));
+                                }
+                            }
+                        }
+                    }
+                }
+                System.out.println("######################################################");
+                System.out.println("Guessing Chance= "+guessingChance);
+                System.out.println("Verdächtigte Personen sind:");
+                for(Card c:susPersons){
+                    System.out.print(c.name+", ");
+                }
+                System.out.println();
+                for(Card c:susWeapons){
+                    System.out.print(c.name+", ");
+                }
+                System.out.println();
+                for(Card c:susRooms){
+                    System.out.print(c.name+", ");
+                }
+                System.out.println();
+                System.out.println("######################################################");
+                for(Player p2:players){
+                    System.out.println();
+                    System.out.println(p2.getName());
+                    System.out.println("Bessesene Karten: ");
+                    for(Card c:p2.getCardsOwned()) {
+                        System.out.print(c.name+", ");
+                    }
                 }
             }
         }
