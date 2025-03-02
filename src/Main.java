@@ -172,8 +172,18 @@ public class Main {
                     System.out.println(p2.getName());
                     System.out.println("Bessesene Karten: ");
                     for(Card c:p2.getCardsOwned()) {
-                        System.out.print(c.name+", ");
+                        if(c!=null)
+                            System.out.print(c.name+", ");
+                        else
+                            System.out.print("None"+", ");
                     }
+                    for(Card c:p2.getCardsNotOwned()) {
+                        if(c!=null)
+                            System.out.print(c.name+", ");
+                        else
+                            System.out.print("None"+", ");
+                    }
+                    System.out.println("Karten, die noch nicht bekannt sind: "+(p2.getAmountCards()-p2.getCardsOwned().size()));
                 }
             }
         }
