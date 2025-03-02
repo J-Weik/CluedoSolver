@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -82,39 +83,62 @@ public class Main {
         Card accusedWeapon;
         Card accusedRoom;
 
+        //Hier beginnt der Main-Loop
         while(guessingChance<1){
+            LinkedList<Card> susPersons = new LinkedList<>();
+            LinkedList<Card> susWeapons = new LinkedList<>();
+            LinkedList<Card> susRooms = new LinkedList<>();
+
             for(Player p:players){
-                System.out.println("Hat "+p.getName()+" eine Anklage gemacht?(y/n): ");
+                System.out.print("Hat "+p.getName()+" eine Anklage gemacht?(y/n): ");
                 if(sc.next().equals("n"))
                     continue;
                 else{
-                    System.out.println("Gib die verdächtigte Person ein: ");
+                    System.out.print("Gib die verdächtigte Person ein: ");
                     accusedPerson = cI.sCard(sc.next());
-                    System.out.println("Gib die verdächtigte Waffe ein: ");
+                    System.out.print("Gib die verdächtigte Waffe ein: ");
                     accusedWeapon = cI.sCard(sc.next());
-                    System.out.println("Gib den verdächtigten Raum ein: ");
+                    System.out.print("Gib den verdächtigten Raum ein: ");
                     accusedRoom = cI.sCard(sc.next());
 
                     String playerInput = "";
-                    Player playerWhoGaveCard;
+                    int playerIdWhoGaveCard= -1;
 
                     while(true){
-                    System.out.println("Welcher der Spieler hat eine Karte gegeben?(Keiner falls niemand Karte gegeben hat: )");
+                    System.out.print("Welcher der Spieler hat eine Karte gegeben?(Keiner falls niemand Karte gegeben hat: ");
 
                     playerInput = sc.next();
+                    if(playerInput.equalsIgnoreCase("keiner"))
+                        break;
+                    boolean playerFound = false;
                     for(Player p2:players) {
                         if(p2.getName().equals(playerInput)){
-                            playerWhoGaveCard = p2;
-                            break;
+                            playerIdWhoGaveCard = p2.getId();
+                            playerFound = true;
                         }
                     }
-
+                    if(!playerFound){
+                        System.out.println("Spieler nicht gefunden!");
+                        System.out.println("Spieler sind:");
+                        for(Player p2:players){
+                            System.out.print(p2.getName()+", ");
+                        }
+                        System.out.print("Keiner");
+                        System.out.println("\n");
                     }
-
+                    else
+                        break;
+                    }
+                    //Hier endet Player Name Input
+                    for(int i= p.getId()+1;i!=playerIdWhoGaveCard;i++){
+                        players[i].addCardNotOwned(accusedPerson);
+                        players[i].addCardNotOwned(accusedWeapon);
+                        players[i].addCardNotOwned(accusedRoom);
+                    }
+                    players[playerIdWhoGaveCard].addAccusation(new Accusation(accusedPerson,accusedWeapon,accusedRoom));
 
                 }
             }
         }
-
     }
 }
