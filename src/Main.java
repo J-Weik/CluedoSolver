@@ -1,102 +1,78 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.Scanner;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
+        final Scanner sc = new Scanner(System.in);
+        final CardInput cI = new CardInput(sc);
 
-        Scanner sc = new Scanner(System.in);
-        int playerAmount;
         double guessingChance = 0.0;
-        CardInput cI = new CardInput();
+
         Player Case = new Player("Case",-1);
         Case.setAmountCards(3);
 
-        ArrayList<Card> Karten = new ArrayList<>();
-        Karten.add(new Card(1,"Prof. Bloom","bloom"));
-        Karten.add(new Card(1,"Baronin von Porz","porz"));
-        Karten.add(new Card(1,"Frl. Ming","ming"));
-        Karten.add(new Card(1,"Frau Weiß","weiß"));
-        Karten.add(new Card(1,"Oberst von Gatow","gatow"));
-        Karten.add(new Card(1,"Herr Dir. Grün","grün"));
-        Karten.add(new Card(2,"Heizungsrohr","heizungsrohr"));
-        Karten.add(new Card(2,"Leuchter","leuchter"));
-        Karten.add(new Card(2,"Pistole","pistole"));
-        Karten.add(new Card(2,"Seil","seil"));
-        Karten.add(new Card(2,"Dolch","dolch"));
-        Karten.add(new Card(2,"Rohrzange","rohrzange"));
-        Karten.add(new Card(3,"Küche","küche"));
-        Karten.add(new Card(3,"Bibliothek","bib"));
-        Karten.add(new Card(3,"Salon","salon"));
-        Karten.add(new Card(3,"Speisezimmer","speise"));
-        Karten.add(new Card(3,"Billiardzimmer","billiard"));
-        Karten.add(new Card(3,"Eingangshalle","eingang"));
-        Karten.add(new Card(3,"Veranda","veranda"));
-        Karten.add(new Card(3,"Arbeitszimmer","arbeit"));
-        Karten.add(new Card(3,"Musikzimmer","musik"));
+        final ArrayList<Card> Persons = new ArrayList<>(6);
+        final ArrayList<Card> Weapons = new ArrayList<>(6);
+        final ArrayList<Card> Rooms = new ArrayList<>(9);
 
-        LinkedList<Card> Persons = new LinkedList<>();
-        for(Card c : Karten) {
-            if(c.type==1)
-                Persons.add(c);
-        }
-        LinkedList<Card> Weapons = new LinkedList<>();
-        for(Card c : Karten) {
-            if(c.type==2)
-                Weapons.add(c);
-        }
-        LinkedList<Card> Rooms = new LinkedList<>();
-        for(Card c : Karten) {
-            if(c.type==3)
-                Rooms.add(c);
+        for(Card c : Card.cards) {
+            switch (c.type) {
+                case Person -> Persons.add(c);
+                case Waffe -> Weapons.add(c);
+                case Raum -> Rooms.add(c);
+            }
         }
 
         System.out.print("Anzahl der Spieler: ");
-        playerAmount = sc.nextInt();
+        final int playerAmount = sc.nextInt();
 
         Player[] players = new Player[playerAmount];
-            for(int i=0;i<playerAmount;i++){
-                players[i] = new Player("Player"+(i+1),i);
-            }
+        for(int i=0; i<playerAmount; i++){
+            players[i] = new Player("Player"+(i+1), i);
+        }
 
         System.out.print("Möchten sie die Spieler umbennen?(y/n): ");
         if(sc.next().equals("y")){
-            for(Player p:players){
-                System.out.print("Name für "+p.getName()+": ");
+            for(Player p: players){
+                System.out.print("Name für " + p.getName() + ": ");
                 p.setName(sc.next());
             }
         }
-        if(18%playerAmount!=0){
-            for(Player p:players){
-                System.out.print("Wieviel Karten hat "+p.getName()+": ");
+
+        if(18 % playerAmount != 0){
+            for(Player p : players){
+                System.out.print("Wieviel Karten hat " + p.getName() + ": ");
                 p.setAmountCards(sc.nextInt());
             }
         }
         else{
+            final int amount = 18 / playerAmount;
             for(Player p:players){
-                p.setAmountCards(18/playerAmount);
+                System.out.println("Der Spieler " + p.getName() + " hat: " + amount);
+                p.setAmountCards(amount);
             }
         }
+
         System.out.print("Welcher der Spieler bist du in der Reinfolge?: ");
-        int playerController = sc.nextInt()-1;
+        final int playerController = sc.nextInt() - 1; // FIXME: Input validation -> >0 oder Exceptions
 
         // User wird nach seinen Karten gefragt, welche dann kein anderer Spieler hat
-        for(int i=0;i<players[playerController].getAmountCards();i++){
+        for(int i=0; i < players[playerController].getAmountCards(); i++){
             System.out.print("Was ist deine "+(i+1)+"te Karte?: ");
-            Card kartenInput = cI.sCard(sc.next());
-            players[playerController].addKnownCard(kartenInput);
-            Case.addCardNotOwned(kartenInput);
-            for(Player p:players){
-                if(p!=players[playerController]){
-                    p.addCardNotOwned(kartenInput);
+            final Card k = cI.nextCard();
+            players[playerController].addKnownCard(k);
+            Case.addCardNotOwned(k);
+
+            // Sagt anderen spielern das sie die Karte nicht besitzen
+            for(Player p : players){
+                if(p != players[playerController]){
+                    p.addCardNotOwned(k);
                 }
             }
         }
+
         //Alle Karten von User sind bekannt, daher hat er keine der anderen Karten
-        for (Card c : Karten) {
+        for (Card c : Card.cards) {
             if(!players[playerController].getCardsOwned().contains(c)){
                 players[playerController].addCardNotOwned(c);
             }
@@ -107,10 +83,10 @@ public class Main {
         Card accusedRoom;
 
         //Hier beginnt der Main-Loop
-        while(guessingChance<1){
-            LinkedList<Card> susPersons = Persons;
-            LinkedList<Card> susWeapons = Weapons;
-            LinkedList<Card> susRooms = Rooms;
+        while(guessingChance < 1){
+            ArrayList<Card> susPersons = Persons;
+            ArrayList<Card> susWeapons = Weapons;
+            ArrayList<Card> susRooms = Rooms;
 
             //MainLoop player durchlauf
             for(Player p:players){
@@ -119,11 +95,11 @@ public class Main {
                     continue;
                 else{
                     System.out.print("Gib die verdächtigte Person ein: ");
-                    accusedPerson = cI.sCard(sc.next());
+                    accusedPerson = cI.nextCard();
                     System.out.print("Gib die verdächtigte Waffe ein: ");
-                    accusedWeapon = cI.sCard(sc.next());
+                    accusedWeapon = cI.nextCard();
                     System.out.print("Gib den verdächtigten Raum ein: ");
-                    accusedRoom = cI.sCard(sc.next());
+                    accusedRoom = cI.nextCard();
 
                     String playerInput = "";
                     int playerIdWhoGaveCard= -1;
@@ -157,7 +133,7 @@ public class Main {
 
                     if(p.getId()==playerController) {
                         System.out.println("Welche Karte wurde gezeigt?");
-                        Card shownCard = cI.sCard(sc.next());
+                        Card shownCard = cI.nextCard();
                         players[playerIdWhoGaveCard].addKnownCard(shownCard);
                         for (Player p2 : players) {
                             if(p2.getId()!=playerIdWhoGaveCard){
@@ -166,7 +142,7 @@ public class Main {
                         }
                         Case.addCardNotOwned(shownCard);
                     }
-                    // Alle Spieler die keine Karte gegeben haben haben keine der Karten
+                    // Alle Spieler die keine Karte gegeben haben haben keine der Card.cards
                     //TODO: Testen ob alles gut funktioniert
                     int iterator = (p.getId()+1)%playerAmount;
                     while(iterator!=playerIdWhoGaveCard&&iterator!=p.getId()){
@@ -193,24 +169,24 @@ public class Main {
                         }
                     }
                 }
-                // Läuft durch alle Spieler und wenn Accusations ohne die Karten die der Spieler nicht hat nur eine restkarte hat wird diese zu den knownKarten hinzugefügt
+                // Läuft durch alle Spieler und wenn Accusations ohne die Card.cards die der Spieler nicht hat nur eine restkarte hat wird diese zu den knownCard.cards hinzugefügt
                 //TODO:testen ob das funktioniert
                 for(Player p2:players){
                     for(Accusation a:p2.getAccusations()){
                         ArrayList<Card> remaining = new ArrayList<>();
-                        if(!p2.getCardsNotOwned().contains(a.getPerson()))
-                            remaining.add(a.getPerson());
-                        if(!p2.getCardsNotOwned().contains(a.getWeapon()))
-                            remaining.add(a.getWeapon());
-                        if(!p2.getCardsNotOwned().contains(a.getRoom()))
-                            remaining.add(a.getRoom());
+                        if(!p2.getCardsNotOwned().contains(a.Person()))
+                            remaining.add(a.Person());
+                        if(!p2.getCardsNotOwned().contains(a.Weapon()))
+                            remaining.add(a.Weapon());
+                        if(!p2.getCardsNotOwned().contains(a.Room()))
+                            remaining.add(a.Room());
 
                         if(remaining.size()==1) {
-                            p2.addKnownCard(remaining.get(0));
+                            p2.addKnownCard(remaining.getFirst());
                             for (Player p3 : players) {
-                                p3.addCardNotOwned(remaining.get(0));
+                                p3.addCardNotOwned(remaining.getFirst());
                             }
-                            Case.addCardNotOwned(remaining.get(0));
+                            Case.addCardNotOwned(remaining.getFirst());
                         }
                     }
                 }
@@ -242,7 +218,7 @@ public class Main {
                 for(Player p2:players){
                     System.out.println("------------------");
                     System.out.println(p2.getName());
-                    System.out.println("Bessesene Karten: ");
+                    System.out.println("Bessesene Card.cards: ");
                     for(Card c:p2.getCardsOwned()) {
                         if(c!=null)
                             System.out.print(c.name+", ");
@@ -250,7 +226,7 @@ public class Main {
                             System.out.print("None"+", ");
                     }
                     System.out.println();
-                    System.out.println("Nicht Bessesene Karten: ");
+                    System.out.println("Nicht Bessesene Card.cards: ");
                     for(Card c:p2.getCardsNotOwned()) {
                         if(c!=null)
                             System.out.print(c.name+", ");
@@ -258,7 +234,7 @@ public class Main {
                             System.out.print("None"+", ");
                     }
                     System.out.println();
-                    System.out.println("Karten, die noch nicht bekannt sind: "+(p2.getAmountCards()-p2.getCardsOwned().size()));
+                    System.out.println("Card.cards, die noch nicht bekannt sind: "+(p2.getAmountCards()-p2.getCardsOwned().size()));
                 }
             }
         }
