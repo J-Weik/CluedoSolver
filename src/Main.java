@@ -142,7 +142,7 @@ public class Main {
                         }
                         Case.addCardNotOwned(shownCard);
                     }
-                    // Alle Spieler die keine Karte gegeben haben haben keine der Card.cards
+                    // Alle Spieler die keine Karte gegeben haben haben keine der Karten
                     //TODO: Testen ob alles gut funktioniert
                     int iterator = (p.getId()+1)%playerAmount;
                     while(iterator!=playerIdWhoGaveCard&&iterator!=p.getId()){
@@ -169,7 +169,7 @@ public class Main {
                         }
                     }
                 }
-                // Läuft durch alle Spieler und wenn Accusations ohne die Card.cards die der Spieler nicht hat nur eine restkarte hat wird diese zu den knownCard.cards hinzugefügt
+                // Läuft durch alle Spieler und wenn Accusations ohne die Karten die der Spieler nicht hat nur eine restkarte hat wird diese zu den knownCards hinzugefügt
                 //TODO:testen ob das funktioniert
                 for(Player p2:players){
                     for(Accusation a:p2.getAccusations()){
@@ -218,7 +218,7 @@ public class Main {
                 for(Player p2:players){
                     System.out.println("------------------");
                     System.out.println(p2.getName());
-                    System.out.println("Bessesene Card.cards: ");
+                    System.out.println("Bessesene Karten: ");
                     for(Card c:p2.getCardsOwned()) {
                         if(c!=null)
                             System.out.print(c.name+", ");
@@ -226,7 +226,7 @@ public class Main {
                             System.out.print("None"+", ");
                     }
                     System.out.println();
-                    System.out.println("Nicht Bessesene Card.cards: ");
+                    System.out.println("Nicht Bessesene Karten: ");
                     for(Card c:p2.getCardsNotOwned()) {
                         if(c!=null)
                             System.out.print(c.name+", ");
@@ -234,7 +234,7 @@ public class Main {
                             System.out.print("None"+", ");
                     }
                     System.out.println();
-                    System.out.println("Card.cards, die noch nicht bekannt sind: "+(p2.getAmountCards()-p2.getCardsOwned().size()));
+                    System.out.println("Karten, die noch nicht bekannt sind: "+(p2.getAmountCards()-p2.getCardsOwned().size()));
                 }
             }
         }
