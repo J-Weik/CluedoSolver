@@ -38,6 +38,22 @@ public class Main {
         Karten.add(new Card(3,"Arbeitszimmer","arbeit"));
         Karten.add(new Card(3,"Musikzimmer","musik"));
 
+        LinkedList<Card> Persons = new LinkedList<>();
+        for(Card c : Karten) {
+            if(c.type==1)
+                Persons.add(c);
+        }
+        LinkedList<Card> Weapons = new LinkedList<>();
+        for(Card c : Karten) {
+            if(c.type==2)
+                Weapons.add(c);
+        }
+        LinkedList<Card> Rooms = new LinkedList<>();
+        for(Card c : Karten) {
+            if(c.type==3)
+                Rooms.add(c);
+        }
+
         System.out.print("Anzahl der Spieler: ");
         playerAmount = sc.nextInt();
 
@@ -85,9 +101,9 @@ public class Main {
 
         //Hier beginnt der Main-Loop
         while(guessingChance<1){
-            LinkedList<Card> susPersons = new LinkedList<>();
-            LinkedList<Card> susWeapons = new LinkedList<>();
-            LinkedList<Card> susRooms = new LinkedList<>();
+            LinkedList<Card> susPersons = Persons;
+            LinkedList<Card> susWeapons = Weapons;
+            LinkedList<Card> susRooms = Rooms;
 
             //MainLoop player durchlauf
             for(Player p:players){
@@ -133,7 +149,7 @@ public class Main {
                     //Hier endet Player Name Input
 
                     // Alle Spieler die keine Karte gegeben habe nhaben keine der Karten
-                    //TODO: FIXEN GROẞER FEHLER
+                    //TODO: FIXEN: nicht mehr sooo GROẞER FEHLER maybe sogar fehlerfrei weiß nich
                     for(int i= p.getId()+1;i!=playerIdWhoGaveCard;i++){
                         players[i].addCardNotOwned(accusedPerson);
                         players[i].addCardNotOwned(accusedWeapon);
@@ -155,6 +171,32 @@ public class Main {
                         }
                     }
                 }
+                // Läuft durch alle Spieler und wenn Accusations ohne die Karten die der Spieler nicht hat nur eine restkarte hat wird diese zu den knownKarten hinzugefügt
+                //TODO:testen ob das funktioniert
+                for(Player p2:players){
+                    for(Accusation a:p2.getAccusations()){
+                        ArrayList<Card> remaining = new ArrayList<>();
+                        if(!p2.getCardsNotOwned().contains(a.getPerson()))
+                            remaining.add(a.getPerson());
+                        if(!p2.getCardsNotOwned().contains(a.getWeapon()))
+                            remaining.add(a.getWeapon());
+                        if(!p2.getCardsNotOwned().contains(a.getRoom()))
+                            remaining.add(a.getRoom());
+
+                        if(remaining.size()==1) {
+                            p2.addKnownCard(remaining.get(0));
+                            for (Player p3 : players) {
+                                p3.addCardNotOwned(remaining.get(0));
+                            }
+                        }
+                    }
+                }
+
+                //Update the sus Lists
+                for(Player c:players){
+
+                }
+
                 System.out.println("######################################################");
                 System.out.println("Guessing Chance= "+guessingChance);
                 System.out.println("Verdächtigte Personen sind:");
