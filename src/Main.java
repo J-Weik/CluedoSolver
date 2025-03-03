@@ -148,6 +148,17 @@ public class Main {
                     }
                     //Hier endet Player Name Input
 
+                    if(p.getId()==playerController) {
+                        System.out.println("Welche Karte wurde gezeigt?");
+                        Card shownCard = cI.sCard(sc.next());
+                        players[playerIdWhoGaveCard].addKnownCard(shownCard);
+                        for (Player p2 : players) {
+                            if(p2.getId()!=playerIdWhoGaveCard){
+                                p2.addCardNotOwned(shownCard);
+                            }
+                        }
+                        Case.addCardNotOwned(shownCard);
+                    }
                     // Alle Spieler die keine Karte gegeben habe nhaben keine der Karten
                     //TODO: FIXEN: nicht mehr sooo GROẞER FEHLER maybe sogar fehlerfrei weiß nich
                     for(int i= p.getId()+1;i!=playerIdWhoGaveCard;i++){
@@ -166,6 +177,7 @@ public class Main {
                                 for (Player p3 : players) {
                                     if(p3!=p2)
                                         p3.addCardNotOwned(a.getIntersectingCards(p2.getAccusations().get(i)).get(0));
+                                    Case.addCardNotOwned(a.getIntersectingCards(p2.getAccusations().get(i)).get(0));
                                 }
                             }
                         }
@@ -188,32 +200,34 @@ public class Main {
                             for (Player p3 : players) {
                                 p3.addCardNotOwned(remaining.get(0));
                             }
+                            Case.addCardNotOwned(remaining.get(0));
                         }
                     }
                 }
 
                 //Update the sus Lists
-                for(Player c:players){
-
-                }
+                susPersons.removeAll(Case.getCardsNotOwned());
+                susWeapons.removeAll(Case.getCardsNotOwned());
+                susRooms.removeAll(Case.getCardsNotOwned());
+                guessingChance=1/(double)(susPersons.size()*susWeapons.size()*susRooms.size());
 
                 System.out.println("######################################################");
-                System.out.println("Guessing Chance= "+guessingChance);
+                System.out.println("Guessing Chance= "+guessingChance*100+"%");
                 System.out.println("Verdächtigte Personen sind:");
-                System.out.println();
                 for(Card c:susPersons){
                     System.out.print(c.name+", ");
                 }
-                System.out.println("Verdächtigte Waffen sind:");
                 System.out.println();
+                System.out.println("Verdächtigte Waffen sind:");
                 for(Card c:susWeapons){
                     System.out.print(c.name+", ");
                 }
-                System.out.println("Verdächtigte Räume sind:");
                 System.out.println();
+                System.out.println("Verdächtigte Räume sind:");
                 for(Card c:susRooms){
                     System.out.print(c.name+", ");
                 }
+                System.out.println();
                 System.out.println("######################################################");
                 for(Player p2:players){
                     System.out.println("------------------");
