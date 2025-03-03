@@ -83,6 +83,7 @@ public class Main {
         System.out.print("Welcher der Spieler bist du in der Reinfolge?: ");
         int playerController = sc.nextInt()-1;
 
+        // User wird nach seinen Karten gefragt, welche dann kein anderer Spieler hat
         for(int i=0;i<players[playerController].getAmountCards();i++){
             System.out.print("Was ist deine "+(i+1)+"te Karte?: ");
             Card kartenInput = cI.sCard(sc.next());
@@ -92,6 +93,12 @@ public class Main {
                 if(p!=players[playerController]){
                     p.addCardNotOwned(kartenInput);
                 }
+            }
+        }
+        //Alle Karten von User sind bekannt, daher hat er keine der anderen Karten
+        for (Card c : Karten) {
+            if(!players[playerController].getCardsOwned().contains(c)){
+                players[playerController].addCardNotOwned(c);
             }
         }
 
@@ -159,12 +166,15 @@ public class Main {
                         }
                         Case.addCardNotOwned(shownCard);
                     }
-                    // Alle Spieler die keine Karte gegeben habe nhaben keine der Karten
-                    //TODO: FIXEN: nicht mehr sooo GROẞER FEHLER maybe sogar fehlerfrei weiß nich
-                    for(int i= p.getId()+1;i!=playerIdWhoGaveCard;i++){
-                        players[i].addCardNotOwned(accusedPerson);
-                        players[i].addCardNotOwned(accusedWeapon);
-                        players[i].addCardNotOwned(accusedRoom);
+                    // Alle Spieler die keine Karte gegeben haben haben keine der Karten
+                    //TODO: Testen ob alles gut funktioniert
+                    int iterator = (p.getId()+1)%playerAmount;
+                    while(iterator!=playerIdWhoGaveCard&&iterator!=p.getId()){
+                        players[iterator].addCardNotOwned(accusedPerson);
+                        players[iterator].addCardNotOwned(accusedWeapon);
+                        players[iterator].addCardNotOwned(accusedRoom);
+
+                        iterator = (iterator+1)%playerAmount;
                     }
                     players[playerIdWhoGaveCard].addAccusation(new Accusation(accusedPerson,accusedWeapon,accusedRoom));
                 }
