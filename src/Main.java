@@ -48,7 +48,7 @@ public class Main {
         else{
             final int amount = 18 / playerAmount;
             for(Player p:players){
-                System.out.println("Der Spieler " + p.getName() + " hat: " + amount);
+                System.out.println("Der Spieler " + p.getName() + " hat " + amount+" Karten");
                 p.setAmountCards(amount);
             }
         }
@@ -108,11 +108,19 @@ public class Main {
                     System.out.print("Welcher der Spieler hat eine Karte gegeben?(Keiner falls niemand Karte gegeben hat: ");
 
                     playerInput = sc.next();
-                    if(playerInput.equalsIgnoreCase("keiner"))
+                    if(playerInput.equalsIgnoreCase("keiner")) {
+                        for (Player p2 : players) {
+                            if (p2 != p) {
+                                p2.addCardNotOwned(accusedPerson);
+                                p2.addCardNotOwned(accusedWeapon);
+                                p2.addCardNotOwned(accusedRoom);
+                            }
+                        }
                         break;
+                    }
                     boolean playerFound = false;
                     for(Player p2:players) {
-                        if(p2.getName().equals(playerInput)){
+                        if(p2.getName().equalsIgnoreCase(playerInput)){
                             playerIdWhoGaveCard = p2.getId();
                             playerFound = true;
                         }

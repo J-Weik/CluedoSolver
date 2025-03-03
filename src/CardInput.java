@@ -14,6 +14,7 @@ public class CardInput {
         Card c = null;
         do {
             String input = scanner.nextLine();
+            if (input.equals("")) continue; // Damit wenn die Methode aufgerufen wird die Tabelle nicht sofort geprintet wird
             c = Card.findCard(input);
             if(c == null) {
                 System.out.println("Karte nicht gefunden!");
@@ -31,6 +32,7 @@ public class CardInput {
                 System.out.println("              |              | Musik        ");
             }
         } while (c == null);
+        System.out.println("Eingegebene Karte: "+c.name);
         return c;
     }
 }
