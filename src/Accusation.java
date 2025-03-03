@@ -1,36 +1,13 @@
-import java.util.LinkedList;
+import java.util.ArrayList;
 
-public class Accusation {
-    private Card Person;
-    private Card Weapon;
-    private Card Room;
+public record Accusation(Card Person, Card Weapon, Card Room) {
+    public ArrayList<Card> getIntersectingCards(Accusation a) {
+        ArrayList<Card> intersectingCards = new ArrayList<>();
 
-    public Accusation(Card Person, Card Weapon, Card Room) {
-        this.Person = Person;
-        this.Weapon = Weapon;
-        this.Room = Room;
-    }
+        if(Person.equals(a.Person)) intersectingCards.add(Person);
+        if(Weapon.equals(a.Weapon)) intersectingCards.add(Weapon);
+        if(Room.equals(a.Room)) intersectingCards.add(Room);
 
-    public Card getPerson() {
-        return Person;
-    }
-
-    public Card getWeapon() {
-        return Weapon;
-    }
-
-    public Card getRoom() {
-        return Room;
-    }
-
-    public LinkedList<Card> getIntersectingCards(Accusation a) {
-        LinkedList<Card> intersectingCards = new LinkedList<>();
-        if(Person.equals(a.getPerson()))
-            intersectingCards.add(Person);
-        if(Weapon.equals(a.getWeapon()))
-            intersectingCards.add(Weapon);
-        if(Room.equals(a.getRoom()))
-            intersectingCards.add(Room);
         return intersectingCards;
     }
 }
