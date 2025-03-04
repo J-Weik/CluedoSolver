@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -177,7 +179,7 @@ public class Main {
                         }
                     }
                 }
-                // Läuft durch alle Spieler und wenn Accusations ohne die Karten die der Spieler nicht hat nur eine restkarte hat wird diese zu den knownCards hinzugefügt
+                // Läuft durch alle Spieler und wenn Accusations ohne die Karten die der Spieler nicht   hat nur eine restkarte hat wird diese zu den knownCards hinzugefügt
                 //TODO:testen ob das funktioniert
                 for(Player p2:players){
                     for(Accusation a:p2.getAccusations()){
@@ -198,11 +200,48 @@ public class Main {
                         }
                     }
                 }
+                // Wenn von Spieler alle CardsNotOwned bekannt sind hat er jene Karten, die nicht in CardsNotOwned sind.TODO testen
+                final List<Card> kartenListe= Arrays.stream(Card.cards).toList();
+                for(Player p2:players){
+                    if((21-p2.getAmountCards())==p2.getCardsNotOwned().size()) {
+                        for (Card c : kartenListe) {
+                            if (!p2.getCardsNotOwned().contains(c)) {
+                                p2.addKnownCard(c);
+                                for (Player p3 : players) {
+                                    if(p3!=p2)
+                                        p3.addCardNotOwned(c);
+                                    Case.addCardNotOwned(c);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Wenn alle karten von spieler bekannt hat er keine anderen karten TODO testen
+                for(Player p2:players){
+                    if(p2.getCardsNotOwned().size()==p2.getAmountCards()) {
+                        for (Card c : kartenListe) {
+                            if (!p2.getCardsOwned().contains(c)) {
+                                p2.addCardNotOwned(c);
+                            }
+                        }
+                    }
+                }
+
+                //Wenn alle Spieler eine Karte nicht haben ist diese in der Mitte
 
                 //Update the sus Lists
                 susPersons.removeAll(Case.getCardsNotOwned());
                 susWeapons.removeAll(Case.getCardsNotOwned());
                 susRooms.removeAll(Case.getCardsNotOwned());
+
+                if(susPersons.size()==1)
+                    Case.addKnownCard(susPersons.get(0));
+                if(susWeapons.size()==1)
+                    Case.addKnownCard(susWeapons.get(0));
+                if(susRooms.size()==1)
+                    Case.addKnownCard(susRooms.get(0));
+
                 guessingChance=1/(double)(susPersons.size()*susWeapons.size()*susRooms.size());
 
                 System.out.println("######################################################");
