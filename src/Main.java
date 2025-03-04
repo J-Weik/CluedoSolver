@@ -219,7 +219,7 @@ public class Main {
 
                 // Wenn alle karten von spieler bekannt hat er keine anderen karten TODO testen
                 for(Player p2:players){
-                    if(p2.getCardsNotOwned().size()==p2.getAmountCards()) {
+                    if(p2.getCardsOwned().size()==p2.getAmountCards()) {
                         for (Card c : kartenListe) {
                             if (!p2.getCardsOwned().contains(c)) {
                                 p2.addCardNotOwned(c);
