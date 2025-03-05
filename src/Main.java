@@ -56,7 +56,7 @@ public class Main {
         }
 
         System.out.print("Welcher der Spieler bist du in der Reinfolge?: ");
-        final int playerController = sc.nextInt() - 1; // FIXME: Input validation -> >0 oder Exceptions
+        final int playerController = sc.nextInt() - 1;
 
         // User wird nach seinen Karten gefragt, welche dann kein anderer Spieler hat
         for(int i=0; i < players[playerController].getAmountCards(); i++){
@@ -153,7 +153,6 @@ public class Main {
                         Case.addCardNotOwned(shownCard);
                     }
                     // Alle Spieler die keine Karte gegeben haben haben keine der Karten
-                    //TODO: Testen ob alles gut funktioniert
                     int iterator = (p.getId()+1)%playerAmount;
                     while(iterator!=playerIdWhoGaveCard&&iterator!=p.getId()){
                         players[iterator].addCardNotOwned(accusedPerson);
@@ -180,7 +179,6 @@ public class Main {
                     }
                 }
                 // Läuft durch alle Spieler und wenn Accusations ohne die Karten die der Spieler nicht   hat nur eine restkarte hat wird diese zu den knownCards hinzugefügt
-                //TODO:testen ob das funktioniert
                 for(Player p2:players){
                     for(Accusation a:p2.getAccusations()){
                         ArrayList<Card> remaining = new ArrayList<>();
@@ -200,7 +198,7 @@ public class Main {
                         }
                     }
                 }
-                // Wenn von Spieler alle CardsNotOwned bekannt sind hat er jene Karten, die nicht in CardsNotOwned sind.TODO testen
+                // Wenn von Spieler alle CardsNotOwned bekannt sind hat er jene Karten, die nicht in CardsNotOwned sind.
                 final List<Card> kartenListe= Arrays.stream(Card.cards).toList();
                 for(Player p2:players){
                     if((21-p2.getAmountCards())==p2.getCardsNotOwned().size()) {
@@ -217,7 +215,7 @@ public class Main {
                     }
                 }
 
-                // Wenn alle karten von spieler bekannt hat er keine anderen karten TODO testen
+                // Wenn alle karten von spieler bekannt hat er keine anderen karten
                 for(Player p2:players){
                     if(p2.getCardsOwned().size()==p2.getAmountCards()) {
                         for (Card c : kartenListe) {
@@ -282,6 +280,12 @@ public class Main {
                     }
                     System.out.println();
                     System.out.println("Karten, die noch nicht bekannt sind: "+(p2.getAmountCards()-p2.getCardsOwned().size()));
+                }
+                if(susPersons.size()==1&&susWeapons.size()==1&&susRooms.size()==1) {
+                    System.out.println("Der Morfall wurde gelöst!");
+                    System.out.println("Der Mörder ist:"+susPersons.get(0));
+                    System.out.println("Die Waffe ist:"+susWeapons.get(0));
+                    System.out.println("Der Raum ist:"+susRooms.get(0));
                 }
             }
         }
