@@ -7,7 +7,7 @@ public class Card {
     public static final Card[] cards = {
             new Card(Type.Person,"Prof. Bloom","bloom"),
             new Card(Type.Person,"Baronin von Porz","porz"),
-            new Card(Type.Person,"Frl. Ming","ming"),
+            new Card(Type.Person,"Gloria","gloria"),
             new Card(Type.Person,"Frau Weiß","weiß"),
             new Card(Type.Person,"Oberst von Gatow","gatow"),
             new Card(Type.Person,"Herr Dir. Grün","grün"),
@@ -22,8 +22,8 @@ public class Card {
             new Card(Type.Raum,"Salon","salon"),
             new Card(Type.Raum,"Speisezimmer","speise"),
             new Card(Type.Raum,"Billiardzimmer","billiard"),
-            new Card(Type.Raum,"Eingangshalle","eingang"),
-            new Card(Type.Raum,"Veranda","veranda"),
+            new Card(Type.Raum,"Halle","halle"),
+            new Card(Type.Raum,"Wintergarten","winter"),
             new Card(Type.Raum,"Arbeitszimmer","arbeit"),
             new Card(Type.Raum,"Musikzimmer","musik"),
     };

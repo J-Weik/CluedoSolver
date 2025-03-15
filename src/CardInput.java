@@ -23,11 +23,11 @@ public class CardInput {
                 System.out.println("--------------+--------------+--------------");
                 System.out.println(" Bloom        | Heizungsrohr | Küche        ");
                 System.out.println(" Porz         | Leuchter     | Bib          ");
-                System.out.println(" Ming         | Pistole      | Salon        ");
+                System.out.println(" Gloria       | Pistole      | Salon        ");
                 System.out.println(" Weiß         | Seil         | Speise       ");
                 System.out.println(" Gatow        | Dolch        | Billiard     ");
-                System.out.println(" Grün         | Rohrzange    | Eingang      ");
-                System.out.println("              |              | Veranda      ");
+                System.out.println(" Grün         | Rohrzange    | Halle        ");
+                System.out.println("              |              | Winter       ");
                 System.out.println("              |              | Arbeit       ");
                 System.out.println("              |              | Musik        ");
             }
