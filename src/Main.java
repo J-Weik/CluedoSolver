@@ -161,7 +161,9 @@ public class Main {
 
                         iterator = (iterator+1)%playerAmount;
                     }
-                    players[playerIdWhoGaveCard].addAccusation(new Accusation(accusedPerson,accusedWeapon,accusedRoom));
+                    if(!playerInput.toLowerCase().equals("keiner")) {
+                        players[playerIdWhoGaveCard].addAccusation(new Accusation(accusedPerson, accusedWeapon, accusedRoom));
+                    }
                 }
                 // Läuft durch alle Spieler und wenn die Schnittmenge von 2 Accusations = 1 ist wird diese Karte zu den KnownCards hinzugefügt
                 for(Player p2:players){
