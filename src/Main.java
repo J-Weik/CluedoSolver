@@ -293,3 +293,7 @@ public class Main {
         }
     }
 }
+
+//TODO#
+// fix crash at 147 because of keiner eingabe
+// if all players dont have a card its the only one on the suslist and its the middle card
