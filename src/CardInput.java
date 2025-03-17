@@ -19,17 +19,19 @@ public class CardInput {
             if(c == null) {
                 System.out.println("Karte nicht gefunden!");
                 System.out.println("Karten sind:");
-                System.out.println(" Personen:    | Tatwaffen:   | Räume:       ");
-                System.out.println("--------------+--------------+--------------");
-                System.out.println(" Bloom        | Heizungsrohr | Küche        ");
-                System.out.println(" Porz         | Leuchter     | Bib          ");
-                System.out.println(" Gloria       | Pistole      | Salon        ");
-                System.out.println(" Weiß         | Seil         | Speise       ");
-                System.out.println(" Gatow        | Dolch        | Billiard     ");
-                System.out.println(" Grün         | Rohrzange    | Halle        ");
-                System.out.println("              |              | Winter       ");
-                System.out.println("              |              | Arbeit       ");
-                System.out.println("              |              | Musik        ");
+                System.out.println("┌──────────────┬──────────────┬──────────────┐");
+                System.out.println("│ Personen:    │ Tatwaffen:   │ Räume:       │");
+                System.out.println("├──────────────┼──────────────┼──────────────┤");
+                System.out.println("│ Bloom        │ Heizungsrohr │ Küche        │");
+                System.out.println("│ Porz         │ Leuchter     │ Bib          │");
+                System.out.println("│ Gloria       │ Pistole      │ Salon        │");
+                System.out.println("│ Weiß         │ Seil         │ Speise       │");
+                System.out.println("│ Gatow        │ Dolch        │ Billiard     │");
+                System.out.println("│ Grün         │ Rohrzange    │ Halle        │");
+                System.out.println("│              │              │ Winter       │");
+                System.out.println("│              │              │ Arbeit       │");
+                System.out.println("│              │              │ Musik        │");
+                System.out.println("└──────────────┴──────────────┴──────────────┘");
             }
         } while (c == null);
         System.out.println("Eingegebene Karte: "+c.name);

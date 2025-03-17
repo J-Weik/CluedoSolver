@@ -40,7 +40,7 @@ public class Card {
 
     public static Card findCard(String id) {
         for(Card card : cards) {
-            if(card.id.equals(id.toLowerCase())) {
+            if(card.id.equalsIgnoreCase(id)) {
                 return card;
             }
         }

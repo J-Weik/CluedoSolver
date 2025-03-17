@@ -141,8 +141,8 @@ public class Main {
                     }
                     //Hier endet Player Name Input
 
-                    if(p.getId()==playerController) {
-                        System.out.println("Welche Karte wurde gezeigt?");
+                    if(p.getId()==playerController&&!playerInput.equalsIgnoreCase("keiner")) {
+                        System.out.print("Welche Karte wurde gezeigt?: ");
                         Card shownCard = cI.nextCard();
                         players[playerIdWhoGaveCard].addKnownCard(shownCard);
                         for (Player p2 : players) {
@@ -161,11 +161,12 @@ public class Main {
 
                         iterator = (iterator+1)%playerAmount;
                     }
-                    if(!playerInput.toLowerCase().equals("keiner")) {
+                    if(!playerInput.equalsIgnoreCase("keiner")) {
                         players[playerIdWhoGaveCard].addAccusation(new Accusation(accusedPerson, accusedWeapon, accusedRoom));
                     }
                 }
                 // Läuft durch alle Spieler und wenn die Schnittmenge von 2 Accusations = 1 ist wird diese Karte zu den KnownCards hinzugefügt
+                /* TODO überleg mal ob das wirklich so ist du dullie
                 for(Player p2:players){
                     for(Accusation a:p2.getAccusations()){
                         for(int i = p2.getAccusations().indexOf(a);i<=(p2.getAccusations().size()-1);i++){
@@ -180,6 +181,7 @@ public class Main {
                         }
                     }
                 }
+                 */
                 // Läuft durch alle Spieler und wenn Accusations ohne die Karten die der Spieler nicht   hat nur eine restkarte hat wird diese zu den knownCards hinzugefügt
                 for(Player p2:players){
                     for(Accusation a:p2.getAccusations()){
@@ -229,6 +231,40 @@ public class Main {
                 }
 
                 //Wenn alle Spieler eine Karte nicht haben ist diese in der Mitte
+                for(Card c2: Card.cards) {
+                    boolean karteIstMitte = true;
+                    for(Player p2:players) {
+                        if (!p2.getCardsNotOwned().contains(c2)) {
+                            karteIstMitte = false;
+                            break;
+                        }
+                    }
+                    if(karteIstMitte) {
+                        switch (c2.type) {
+                            case Person: {
+                                susPersons.clear();
+                                susPersons.add(c2);
+                                Case.addKnownCard(c2);
+                                break;
+                            }
+                            case Raum: {
+                                susRooms.clear();
+                                susRooms.add(c2);
+                                Case.addKnownCard(c2);
+                                break;
+                            }
+                            case Waffe: {
+                                susWeapons.clear();
+                                susWeapons.add(c2);
+                                Case.addKnownCard(c2);
+                                break;
+                            }
+
+                        }
+
+                    }
+                }
+
 
                 //Update the sus Lists
                 susPersons.removeAll(Case.getCardsNotOwned());
@@ -285,15 +321,88 @@ public class Main {
                 }
                 if(susPersons.size()==1&&susWeapons.size()==1&&susRooms.size()==1) {
                     System.out.println("Der Morfall wurde gelöst!");
-                    System.out.println("Der Mörder ist:"+susPersons.get(0));
-                    System.out.println("Die Waffe ist:"+susWeapons.get(0));
-                    System.out.println("Der Raum ist:"+susRooms.get(0));
+                    System.out.println("Der Mörder ist:"+susPersons.get(0).name);
+                    System.out.println("Die Waffe ist:"+susWeapons.get(0).name);
+                    System.out.println("Der Raum ist:"+susRooms.get(0).name);
+                    break;
                 }
             }
         }
     }
 }
 
-//TODO#
-// fix crash at 147 because of keiner eingabe
-// if all players dont have a card its the only one on the suslist and its the middle card
+// ┘
+// ┐
+// ┌
+// └
+// ┼
+// ─
+// ├
+// ┤
+// ┴
+// ┬
+// │
+
+/*
+TODO: Change the info table to look like this
+
+
+#####################################################
+Guessing Chance= 0.5714285714285714%
+Verdächtigte Personen sind:
+Baronin von Porz, Gloria, Frau Weiß, Oberst von Gatow, Herr Dir. Grün,
+Verdächtigte Waffen sind:
+Heizungsrohr, Leuchter, Pistole, Dolch, Rohrzange,
+Verdächtigte Räume sind:
+Küche, Salon, Speisezimmer, Billiardzimmer, Halle, Wintergarten, Arbeitszimmer,
+######################################################
+┌─────────────┬───┬───┬───┬───┬───┬───┐
+│             │   │   │ P │   │   │   │
+│             │   │   │ l │   │   │   │
+│             │   │   │ a │   │   │   │
+│             │   │   │ y │   │   │ C │
+│             │   │   │ e │   │   │ a │
+│             │   │   │ r │   │   │ s │
+│             │   │   │ 3 │   │   │ e │
+├─────────────┼───┼───┼───┼───┼───┼───┤
+│ Bloom       │ X │ X │ O │ X │ X │ X │
+├─────────────┼───┼───┼───┼───┼───┼───┤
+│ Porz        │   │   │ X │   │   │   │
+├─────────────┼───┼───┼───┼───┼───┼───┤
+│ Weiß        │   │   │ X │   │   │   │
+├─────────────┼───┼───┼───┼───┼───┼───┤
+│ Gloria      │   │   │ X │   │   │   │
+├─────────────┼───┼───┼───┼───┼───┼───┤
+│ Grün        │   │ X │ X │   │   │   │
+├─────────────┼───┼───┼───┼───┼───┼───┤
+│ Leuchter    │   │   │ X │   │   │   │
+├─────────────┼───┼───┼───┼───┼───┼───┤
+│ Dolch       │   │ X │ X │   │   │   │
+├─────────────┼───┼───┼───┼───┼───┼───┤
+│ Heizugsrohr │   │   │ X │   │   │   │
+├─────────────┼───┼───┼───┼───┼───┼───┤
+│ Pistole     │   │   │ X │   │   │   │
+├─────────────┼───┼───┼───┼───┼───┼───┤
+│ Seil        │ X │ X │ O │ X │ X │ X │
+├─────────────┼───┼───┼───┼───┼───┼───┤
+│ Rohrzange   │   │   │ X │   │   │   │
+├─────────────┼───┼───┼───┼───┼───┼───┤
+│ Musik       │ X │ X │ O │ X │ X │ X │
+├─────────────┼───┼───┼───┼───┼───┼───┤
+│ Billiard    │   │ X │ X │   │   │   │
+├─────────────┼───┼───┼───┼───┼───┼───┤
+│ Winter      │   │   │ X │   │   │   │
+├─────────────┼───┼───┼───┼───┼───┼───┤
+│ Speise      │   │   │ X │   │   │   │
+├─────────────┼───┼───┼───┼───┼───┼───┤
+│ Halle       │   │   │ X │   │   │   │
+├─────────────┼───┼───┼───┼───┼───┼───┤
+│ Küche       │   │   │ X │   │   │   │
+├─────────────┼───┼───┼───┼───┼───┼───┤
+│ Bib         │ X │ X │ O │ X │ X │ X │
+├─────────────┼───┼───┼───┼───┼───┼───┤
+│ Salon       │   │   │ X │   │   │   │
+├─────────────┼───┼───┼───┼───┼───┼───┤
+│ Arbeit      │   │   │ X │   │   │   │
+└─────────────┴───┴───┴───┴───┴───┴───┘
+ */
