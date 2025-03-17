@@ -57,6 +57,8 @@ public class Player {
     }
 
     boolean addCardNotOwned(Card card) {
+        if(cardsOwned.contains(card))
+            return false;
         for (Card c : cardsNotOwned) {
             if (c.equals(card))
                 return false;
